@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SatvikScan - Instant barcode scanning for Vegan, Vegetarian & Jain diets. Join the beta now.">
+    <title>SatvikScan | Health & Purity Scanner</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@400;500;600&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #10B981;
+            --primary-dark: #059669;
+            --primary-light: #34D399;
+            --primary-glow: rgba(16, 185, 129, 0.4);
+            --sattvic: #8B5CF6;
+            --rajasic: #F59E0B;
+            --tamasic: #EF4444;
+            --danger-red: #DC2626;
+            --warning-yellow: #F59E0B;
+            --safe-green: #10B981;
+            --bg-dark: #020617;
+            --surface: rgba(30, 41, 59, 0.7);
+            --surface-border: rgba(255, 255, 255, 0.1);
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --ai-blue: #3B82F6;
+            --vegan-green: #22C55E;
+            --jain-purple: #A855F7;
+            --sattvic-gold: #EAB308;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            right: 10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, transparent 70%);
+            z-index: -1;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 80px 20px 60px;
+            animation: fadeDown 0.8s ease-out;
+        }
+
+        .beta-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--primary-light);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
+        }
+
+        .pulse {
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary-light);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        h1 {
+            font-size: 4.5rem;
+            font-weight: 800;
+            letter-spacing: -2px;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--sattvic) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .tagline {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+
+        /* Diet Pills */
+        .diet-pills {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+
+        .diet-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .diet-pill:hover {
+            transform: translateY(-3px);
+        }
+
+        .diet-pill.sattvic {
+            background: rgba(139, 92, 246, 0.15);
+            color: #C4B5FD;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .diet-pill.vegan {
+            background: rgba(34, 197, 94, 0.15);
+            color: #86EFAC;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .diet-pill.jain {
+            background: rgba(168, 85, 247, 0.15);
+            color: #D8B4FE;
+            border: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        /* Hero Grid */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            margin-bottom: 80px;
+            padding-top: 20px;
+        }
+
+        /* Left Side: Mock UI & Features */
+        .hero-content {
+            padding-top: 10px;
+            animation: fadeRight 0.8s ease-out 0.2s backwards;
+        }
+
+        /* MOCK APP CARD */
+        .mock-app-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            max-width: 500px;
+            transform: rotate(-1deg);
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .mock-app-card:hover {
+            transform: rotate(0deg) scale(1.02);
+        }
+
+        .ai-badge {
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: var(--ai-blue);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        .ai-badge::before {
+            content: '🤖';
+            font-size: 0.8rem;
+        }
+
+        .mock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 20px;
+            padding-top: 10px;
+        }
+
+        .mock-title { 
+            font-weight: 700; 
+            font-size: 1.1rem; 
+            color: #fff; 
+            display: block;
+            margin-bottom: 4px;
+        }
+        
+        .mock-brand { 
+            font-size: 0.85rem; 
+            color: var(--text-muted); 
+            font-weight: 400; 
+        }
+
+        /* Health Rating */
+        .health-rating {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+        }
+
+        .health-grade {
+            font-size: 2.5rem;
+            font-weight: 800;
+            font-family: 'Poppins', sans-serif;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+        }
+
+        .grade-a { background: rgba(16, 185, 129, 0.2); color: #10B981; border: 2px solid #10B981; }
+        .grade-b { background: rgba(34, 197, 94, 0.2); color: #22C55E; border: 2px solid #22C55E; }
+        .grade-c { background: rgba(245, 158, 11, 0.2); color: #F59E0B; border: 2px solid #F59E0B; }
+        .grade-d { background: rgba(239, 68, 68, 0.2); color: #EF4444; border: 2px solid #EF4444; }
+        .grade-e { background: rgba(220, 38, 38, 0.2); color: #DC2626; border: 2px solid #DC2626; }
+
+        .health-info {
+            flex: 1;
+        }
+
+        .health-label {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .health-score {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .harmful-count {
+            font-size: 0.8rem;
+            color: #EF4444;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        /* Harmful Ingredients List */
+        .harmful-ingredients {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .harmful-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #FCA5A5;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .harmful-list {
+            list-style: none;
+            font-size: 0.85rem;
+        }
+
+        .harmful-list li {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            color: #FCA5A5;
+        }
+
+        .harmful-list li::before {
+            content: '⚠️';
+            font-size: 0.9rem;
+        }
+
+        .ingredient-detail {
+            color: #94A3B8;
+            font-size: 0.8rem;
+            margin-left: 20px;
+            font-style: italic;
+        }
+
+        /* Diet Compatibility Pills */
+        .diet-compatibility {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+
+        .compatibility-pill {
+            padding: 6px 15px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pill-compatible {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34D399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .pill-warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: #FCD34D;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .pill-incompatible {
+            background: rgba(239, 68, 68, 0.15);
+            color: #FCA5A5;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        /* Ingredient Analysis Box */
+        .mock-analysis {
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 15px;
+        }
+        
+        .mock-confidence { 
+            margin-bottom: 12px; 
+        }
+        
+        .mock-conf-label { 
+            font-size: 0.85rem; 
+            color: #cbd5e1; 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 6px; 
+        }
+        
+        .mock-conf-bar-bg { 
+            width: 100%; 
+            height: 6px; 
+            background: rgba(255,255,255,0.1); 
+            border-radius: 3px; 
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        
+        .mock-conf-bar-fill { 
+            width: 100%; 
+            height: 100%; 
+            border-radius: 3px; 
+            transition: width 0.5s ease, background 0.5s ease;
+        }
+
+        /* Example Navigation */
+        .example-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .example-nav button {
+            background: none;
+            border: 1px solid rgba(255,255,255,0.1);
+            color: var(--text-muted);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .example-nav button:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .example-counter {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        /* Feature List with Health Focus */
+        .features-list {
+            list-style: none;
+            display: grid;
+            gap: 24px;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            color: var(--text-main);
+            font-size: 1.05rem;
+            padding: 8px 0;
+        }
+
+        .feature-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--primary);
+            border-radius: 8px;
+            margin-right: 16px;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .feature-ai {
+            display: inline-block;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--ai-blue);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9em;
+            margin-left: 4px;
+        }
+
+        .feature-health {
+            color: var(--primary-light);
+            font-weight: 600;
+        }
+
+        .feature-warning {
+            color: var(--warning-yellow);
+            font-weight: 600;
+        }
+
+        .feature-danger {
+            color: var(--danger-red);
+            font-weight: 600;
+        }
+
+        /* Right Side: Form Card */
+        .form-container {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--surface-border);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            animation: fadeUp 0.8s ease-out 0.4s backwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .form-container::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        }
+
+        .form-container h3 { 
+            font-size: 1.5rem; 
+            margin-bottom: 8px; 
+            color: white; 
+        }
+        
+        .form-subtitle { 
+            color: var(--text-muted); 
+            margin-bottom: 32px; 
+            font-size: 0.95rem; 
+        }
+        
+        .form-group { 
+            margin-bottom: 20px; 
+        }
+
+        label { 
+            display: block; 
+            margin-bottom: 8px; 
+            color: #cbd5e1; 
+            font-weight: 500; 
+            font-size: 0.9rem; 
+        }
+
+        input, select {
+            width: 100%; 
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid #334155; 
+            border-radius: 8px;
+            color: #fff; 
+            font-family: inherit; 
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none; 
+            border-color: var(--primary);
+            background: rgba(15, 23, 42, 0.9);
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+        }
+        
+        .submit-btn {
+            width: 100%; 
+            padding: 16px;
+            background: var(--primary); 
+            border: none; 
+            border-radius: 8px;
+            color: #fff; 
+            font-size: 1.1rem; 
+            font-weight: 600; 
+            cursor: pointer;
+            transition: all 0.3s ease; 
+            position: relative;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .submit-btn:hover { 
+            background: var(--primary-dark); 
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4); 
+        }
+        
+        .submit-btn:disabled { 
+            opacity: 0.7; 
+            cursor: wait; 
+            transform: none; 
+        }
+
+        /* Success & Spinner */
+        .success-message { 
+            display: none; 
+            text-align: center; 
+            padding: 40px 20px; 
+            animation: scaleIn 0.5s; 
+        }
+        
+        .success-icon { 
+            width: 64px; 
+            height: 64px; 
+            background: var(--primary); 
+            color: white; 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 2rem; 
+            margin: 0 auto 20px; 
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.4); 
+        }
+        
+        .spinner { 
+            width: 20px; 
+            height: 20px; 
+            border: 3px solid rgba(255,255,255,0.3); 
+            border-radius: 50%; 
+            border-top-color: #fff; 
+            animation: spin 1s ease-in-out infinite; 
+            display: none; 
+        }
+
+        /* Animations */
+        @keyframes pulse { 
+            0% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.7); } 
+            70% { box-shadow: 0 0 0 6px rgba(52, 211, 153, 0); } 
+            100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0); } 
+        }
+        
+        @keyframes fadeDown { 
+            from { opacity: 0; transform: translateY(-20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        @keyframes fadeUp { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        
+        @keyframes fadeRight { 
+            from { opacity: 0; transform: translateX(-20px); } 
+            to { opacity: 1; transform: translateX(0); } 
+        }
+        
+        @keyframes scaleIn { 
+            from { opacity: 0; transform: scale(0.9); } 
+            to { opacity: 1; transform: scale(1); } 
+        }
+        
+        @keyframes spin { 
+            to { transform: rotate(360deg); } 
+        }
+
+        @keyframes warningPulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            h1 { font-size: 3rem; }
+            .hero { grid-template-columns: 1fr; gap: 40px; }
+            .hero-content { order: 2; text-align: center; }
+            .mock-app-card { margin: 0 auto 30px; transform: rotate(0deg); text-align: left; }
+            .features-list { max-width: 400px; margin: 0 auto; text-align: left; }
+            .form-container { order: 1; padding: 30px 20px; }
+        }
+        
+        @media (max-width: 480px) {
+            h1 { font-size: 2.5rem; }
+            .beta-badge { font-size: 0.75rem; padding: 6px 16px; }
+            .mock-app-card { padding: 20px; }
+            .features-list { gap: 15px; }
+            .feature-item { font-size: 0.95rem; }
+            .diet-pills { gap: 8px; }
+            .diet-pill { padding: 8px 15px; font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <div class="beta-badge">
+                <span class="pulse"></span>
+                BETA ACCESS • LIMITED SPOTS
+            </div>
+            <h1>SatvikScan</h1>
+            <p class="tagline">Scan for harmful ingredients instantly. Get detailed analysis on health ratings, purity, and spiritual alignment.</p>
+            
+            <div class="diet-pills">
+                <div class="diet-pill vegan">
+                    <span>🌱</span>
+                    <span>Vegan Friendly</span>
+                </div>                <div class="diet-pill vegan">
+                    <span>🍃</span>
+                    <span>Vegeterian Friendly</span>
+                </div>
+                    <div class="diet-pill sattvic">
+                    <span>🕉️</span>
+                    <span>Sattvic Diet</span>
+                </div>
+                <div class="diet-pill jain">
+                    <span>☸️</span>
+                    <span>Jain Compatible</span>
+                </div>
+            </div>
+        </header>
+
+        <section class="hero">
+            <div class="hero-content">
+                
+                <div class="mock-app-card">
+                    <div class="ai-badge">AI-Powered Analysis</div>
+                    
+                    <div class="mock-header">
+                        <div>
+                            <span class="mock-title" id="exampleProductName">Chocolate Protein Bars</span>
+                            <span class="mock-brand" id="exampleBrandName">EnergyPlus Nutrition</span>
+                        </div>
+                    </div>
+
+                    <!-- Health Rating -->
+                    <div class="health-rating">
+                        <div class="health-grade grade-c" id="healthGrade">C</div>
+                        <div class="health-info">
+                            <div class="health-label">Health & Purity Rating</div>
+                            <div class="health-score" id="healthScore">Moderate</div>
+                            <div class="harmful-count" id="harmfulCount">
+                                <span>⚠️</span>
+                                <span>3 harmful ingredients detected</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Harmful Ingredients -->
+                    <div class="harmful-ingredients" id="harmfulIngredients">
+                        <!-- Filled by JavaScript -->
+                    </div>
+
+                    <!-- Diet Compatibility Pills -->
+                    <div class="diet-compatibility" id="dietCompatibility">
+                        <!-- Filled by JavaScript -->
+                    </div>
+
+                    <div class="mock-analysis">
+                        <div class="mock-confidence">
+                            <div class="mock-conf-label">
+                                <span id="analysisLabel">AI Analysis Confidence</span>
+                                <span id="confidenceValue" style="color: #3B82F6;">94%</span>
+                            </div>
+                            <div class="mock-conf-bar-bg">
+                                <div class="mock-conf-bar-fill" id="confidenceBar"></div>
+                            </div>
+                        </div>
+                        <p id="exampleDescription" style="font-size: 0.85rem; color: #94A3B8; margin-top: 10px;">
+                            <span id="descriptionText">Contains artificial sweeteners and animal-derived ingredients.</span>
+                            <br>
+                            <span style="font-size: 0.8rem; color: #64748B; margin-top: 5px; display: block;" id="recommendationText">
+                                Consider plant-based alternatives for better health.
+                            </span>
+                        </p>
+                    </div>
+                    
+                    <div class="example-nav">
+                        <button id="prevExample">←</button>
+                        <span class="example-counter" id="exampleCounter">1/5</span>
+                        <button id="nextExample">→</button>
+                    </div>
+                </div>
+
+                <h2>Health & Purity Scanning</h2>
+                <ul class="features-list">
+                    <li class="feature-item">
+                        <div class="feature-icon">🏥</div>
+                        <div>
+                            <strong>Comprehensive Health Grading (A-E)</strong>: Get instant <span class="feature-health">health scores</span> based on additives, processing, and nutritional value. A = Excellent, E = Poor.
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">🚫</div>
+                        <div>
+                            <strong>Harmful Ingredient Detection</strong>: Flags <span class="feature-danger">dangerous additives</span> like Carmine (crushed insects), MSG, Aspartame, high-fructose corn syrup, and artificial colors.
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">💊</div>
+                        <div>
+                            <strong>Diet-Specific Pill System</strong>: Special <span class="feature-health">Sattvic</span>, <span class="feature-health">Vegan</span>, and <span class="feature-health">Jain compatibility pills</span> show instantly if products match your spiritual diet.
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">🧪</div>
+                        <div>
+                            <strong>Chemical & Processing Analysis</strong>: Detects <span class="feature-warning">ultra-processed foods</span>, GMOs, pesticide residues, and irradiation treatment.
+                        </div>
+                    </li>
+                    <li class="feature-item">
+                        <div class="feature-icon">🤝</div>
+                        <div>
+                            <strong>Community Health Database</strong>: Every scan improves our database. See <span class="feature-health">community ratings</span> and avoid products others have flagged as problematic.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="form-container">
+                <div id="successMessage" class="success-message">
+                    <div class="success-icon">✓</div>
+                    <h3>You're on the list!</h3>
+                    <p>Thank you for joining the SatvikScan health movement. We'll email you beta access within 48 hours.</p>
+                    <p style="margin-top: 15px; font-size: 0.9rem; color: var(--text-muted);">
+                        Help build our database by scanning and rating products for community health!
+                    </p>
+                </div>
+
+                <form id="betaForm">
+                    <h3>Join the Health Beta</h3>
+                    <p class="form-subtitle">Be among the first to transform your food choices.</p>
+                    
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="John" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="John@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number (Optional)</label>
+                        <input type="tel" id="phone" placeholder="+61 12345 6789">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dietary">Primary Dietary Preference</label>
+                        <select id="dietary" required>
+                            <option value="" disabled selected>Select your diet...</option>
+                            <option value="Vegan">Vegan</option>
+                            <option value="Vegetarian">Vegetarian (Lacto)</option>
+                            <option value="Jain">Jain (No Onion/Garlic)</option>
+                            <option value="Sattvic">Strictly Sattvic</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="device">Device Type</label>
+                        <select id="device" required>
+                            <option value="" disabled selected>Select your phone...</option>
+                            <option value="Android">Android</option>
+                            <option value="iOS (iPhone)">iOS (iPhone)</option>
+                            <option value="Both">Both</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span class="btn-text">Join Health Beta</span>
+                        <div class="spinner"></div>
+                    </button>
+                    
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 20px; text-align: center;">
+                        By joining, you help build a healthier, more conscious food ecosystem for everyone.
+                    </p>
+                </form>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // --- DYNAMIC PRODUCT EXAMPLES ---
+        const productExamples = [
+            {
+                id: 1,
+                name: "Dark Chocolate Protein Bars",
+                brand: "EnergyPlus Nutrition",
+                description: "Contains artificial sweeteners and animal-derived ingredients.",
+                recommendation: "Consider plant-based alternatives for better health.",
+                healthGrade: "C",
+                healthScore: "Moderate",
+                harmfulIngredients: [
+                    { name: "Carmine (E120)", detail: "Red coloring from crushed cochineal insects" },
+                    { name: "Aspartame", detail: "Artificial sweetener linked to health concerns" },
+                    { name: "Gelatin", detail: "Derived from animal bones and skin" }
+                ],
+                dietCompatibility: [
+                    { diet: "Sattvic", status: "incompatible", reason: "Contains tamasic ingredients" },
+                    { diet: "Vegan", status: "incompatible", reason: "Contains animal products" },
+                    { diet: "Jain", status: "warning", reason: "May contain hidden derivatives" }
+                ],
+                confidence: 94,
+                confidenceColor: "#F59E0B"
+            },
+            {
+                id: 2,
+                name: "Organic Quinoa Snacks",
+                brand: "Pure Sattvic Foods",
+                description: "100% plant-based with no artificial additives detected.",
+                recommendation: "Excellent choice for spiritual and physical health.",
+                healthGrade: "A",
+                healthScore: "Excellent",
+                harmfulIngredients: [],
+                dietCompatibility: [
+                    { diet: "Sattvic", status: "compatible", reason: "Pure, natural ingredients" },
+                    { diet: "Vegan", status: "compatible", reason: "100% plant-based" },
+                    { diet: "Jain", status: "compatible", reason: "No root vegetables detected" }
+                ],
+                confidence: 98,
+                confidenceColor: "#10B981"
+            },
+            {
+                id: 3,
+                name: "Fruit Juice Drink",
+                brand: "Tropical Delight",
+                description: "High in added sugars and artificial colors.",
+                recommendation: "Opt for fresh fruit or 100% juice instead.",
+                healthGrade: "D",
+                healthScore: "Poor",
+                harmfulIngredients: [
+                    { name: "High-Fructose Corn Syrup", detail: "Linked to obesity and diabetes" },
+                    { name: "Artificial Colors (Red #40)", detail: "May cause hyperactivity in children" },
+                    { name: "Sodium Benzoate", detail: "Preservative that can form benzene" }
+                ],
+                dietCompatibility: [
+                    { diet: "Sattvic", status: "incompatible", reason: "Contains rajasic stimulants" },
+                    { diet: "Vegan", status: "compatible", reason: "Plant-based but unhealthy" },
+                    { diet: "Jain", status: "warning", reason: "May contain processing aids" }
+                ],
+                confidence: 89,
+                confidenceColor: "#EF4444"
+            },
+            {
+                id: 4,
+                name: "Ayurvedic Herbal Tea",
+                brand: "Vedic Wellness",
+                description: "Traditional herbs with no synthetic additives.",
+                recommendation: "Supports balance and digestion.",
+                healthGrade: "A+",
+                healthScore: "Excellent",
+                harmfulIngredients: [],
+                dietCompatibility: [
+                    { diet: "Sattvic", status: "compatible", reason: "Promotes sattvic qualities" },
+                    { diet: "Vegan", status: "compatible", reason: "100% plant-based" },
+                    { diet: "Jain", status: "compatible", reason: "Herbal preparation" }
+                ],
+                confidence: 96,
+                confidenceColor: "#8B5CF6"
+            },
+            {
+                id: 5,
+                name: "Cheese Crackers",
+                brand: "SnackTime",
+                description: "Contains MSG and animal rennet (from calves).",
+                recommendation: "Choose plant-based cheese alternatives.",
+                healthGrade: "E",
+                healthScore: "Very Poor",
+                harmfulIngredients: [
+                    { name: "Monosodium Glutamate (MSG)", detail: "Flavor enhancer with side effects" },
+                    { name: "Animal Rennet", detail: "Enzyme from calf stomachs" },
+                    { name: "Trans Fats", detail: "Partially hydrogenated oils" },
+                    { name: "Artificial Flavors", detail: "Synthetic chemicals" }
+                ],
+                dietCompatibility: [
+                    { diet: "Sattvic", status: "incompatible", reason: "Highly tamasic" },
+                    { diet: "Vegan", status: "incompatible", reason: "Contains animal products" },
+                    { diet: "Jain", status: "incompatible", reason: "Multiple violations" }
+                ],
+                confidence: 97,
+                confidenceColor: "#DC2626"
+            }
+        ];
+
+        let currentExampleIndex = 0;
+        let autoRotateInterval;
+
+        function updateExampleDisplay() {
+            const example = productExamples[currentExampleIndex];
+            
+            // Update product info
+            document.getElementById('exampleProductName').textContent = example.name;
+            document.getElementById('exampleBrandName').textContent = example.brand;
+            document.getElementById('descriptionText').textContent = example.description;
+            document.getElementById('recommendationText').textContent = example.recommendation;
+            document.getElementById('exampleCounter').textContent = `${currentExampleIndex + 1}/${productExamples.length}`;
+            
+            // Update health rating
+            const healthGrade = document.getElementById('healthGrade');
+            healthGrade.textContent = example.healthGrade;
+            healthGrade.className = 'health-grade grade-' + example.healthGrade.toLowerCase();
+            
+            document.getElementById('healthScore').textContent = example.healthScore;
+            
+            // Update harmful count
+            const harmfulCount = document.getElementById('harmfulCount');
+            if (example.harmfulIngredients.length > 0) {
+                harmfulCount.innerHTML = `<span>⚠️</span><span>${example.harmfulIngredients.length} harmful ingredients detected</span>`;
+                harmfulCount.style.display = 'flex';
+            } else {
+                harmfulCount.style.display = 'none';
+            }
+            
+            // Update harmful ingredients list
+            const harmfulIngredients = document.getElementById('harmfulIngredients');
+            if (example.harmfulIngredients.length > 0) {
+                harmfulIngredients.innerHTML = `
+                    <div class="harmful-title">
+                        <span>🚫</span>
+                        <span>Harmful Ingredients Found</span>
+                    </div>
+                    <ul class="harmful-list">
+                        ${example.harmfulIngredients.map(ing => `
+                            <li>${ing.name}
+                                <div class="ingredient-detail">${ing.detail}</div>
+                            </li>
+                        `).join('')}
+                    </ul>
+                `;
+                harmfulIngredients.style.display = 'block';
+                
+                // Add warning animation
+                harmfulIngredients.style.animation = 'warningPulse 2s infinite';
+            } else {
+                harmfulIngredients.style.display = 'none';
+            }
+            
+            // Update diet compatibility pills
+            const dietCompatibility = document.getElementById('dietCompatibility');
+            dietCompatibility.innerHTML = example.dietCompatibility.map(diet => {
+                let pillClass = '';
+                let icon = '';
+                
+                if (diet.status === 'compatible') {
+                    pillClass = 'pill-compatible';
+                    icon = '✓';
+                } else if (diet.status === 'warning') {
+                    pillClass = 'pill-warning';
+                    icon = '⚠️';
+                } else {
+                    pillClass = 'pill-incompatible';
+                    icon = '✗';
+                }
+                
+                return `<div class="compatibility-pill ${pillClass}" title="${diet.reason}">
+                    ${icon} ${diet.diet}
+                </div>`;
+            }).join('');
+            
+            // Update confidence bar
+            const confidenceBar = document.getElementById('confidenceBar');
+            confidenceBar.style.width = `${example.confidence}%`;
+            confidenceBar.style.background = example.confidenceColor;
+            
+            // Update confidence value text
+            const confidenceValue = document.getElementById('confidenceValue');
+            confidenceValue.textContent = `${example.confidence}%`;
+            confidenceValue.style.color = example.confidenceColor;
+            
+            // Update analysis label
+            document.getElementById('analysisLabel').textContent = example.harmfulIngredients.length > 0 
+                ? 'Health Risk Analysis' 
+                : 'AI Purity Analysis';
+        }
+
+        function nextExample() {
+            currentExampleIndex = (currentExampleIndex + 1) % productExamples.length;
+            updateExampleDisplay();
+            resetAutoRotate();
+        }
+
+        function prevExample() {
+            currentExampleIndex = (currentExampleIndex - 1 + productExamples.length) % productExamples.length;
+            updateExampleDisplay();
+            resetAutoRotate();
+        }
+
+        function resetAutoRotate() {
+            clearInterval(autoRotateInterval);
+            autoRotateInterval = setInterval(nextExample, 6000);
+        }
+
+        // Initialize with first example
+        document.addEventListener('DOMContentLoaded', function() {
+            updateExampleDisplay();
+            
+            // Add event listeners for navigation buttons
+            document.getElementById('nextExample').addEventListener('click', nextExample);
+            document.getElementById('prevExample').addEventListener('click', prevExample);
+            
+            // Auto-rotate examples every 6 seconds
+            autoRotateInterval = setInterval(nextExample, 6000);
+            
+            // Stop auto-rotate on hover
+            const mockCard = document.querySelector('.mock-app-card');
+            mockCard.addEventListener('mouseenter', () => clearInterval(autoRotateInterval));
+            mockCard.addEventListener('mouseleave', resetAutoRotate);
+        });
+
+        // --- FORM SUBMISSION ---
+        const CONFIG = {
+            formAction: 'https://docs.google.com/forms/d/e/1FAIpQLScRyDIJA2ebmpvsgAYCkq8oOVTO0qXLU7thVN0zlxI5Y1TEvA/formResponse',
+            fields: {
+                name: 'entry.1934968811',
+                email: 'entry.428247014',
+                phone: 'entry.1794057873',
+                dietary: 'entry.280077287',
+                device: 'entry.1463541313'
+            }
+        };
+
+        document.getElementById('betaForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const btn = this.querySelector('.submit-btn');
+            const btnText = this.querySelector('.btn-text');
+            const spinner = this.querySelector('.spinner');
+            const formElement = this;
+            const successMsg = document.getElementById('successMessage');
+            
+            // 1. UI Loading State
+            btn.disabled = true;
+            btnText.textContent = 'Securing your spot...';
+            spinner.style.display = 'block';
+            
+            // 2. Prepare Data
+            const params = new URLSearchParams();
+            params.append(CONFIG.fields.name, document.getElementById('name').value);
+            params.append(CONFIG.fields.email, document.getElementById('email').value);
+            params.append(CONFIG.fields.phone, document.getElementById('phone').value || '');
+            params.append(CONFIG.fields.dietary, document.getElementById('dietary').value);
+            params.append(CONFIG.fields.device, document.getElementById('device').value);
+
+            // 3. Submit
+            try {
+                await fetch(CONFIG.formAction, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: params.toString()
+                });
+
+                // 4. UI Success Transition
+                setTimeout(() => {
+                    formElement.style.display = 'none';
+                    successMsg.style.display = 'block';
+                    
+                    if(window.innerWidth < 768) {
+                        successMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                }, 800);
+
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('Connection error. Please try again.');
+                btn.disabled = false;
+                btnText.textContent = 'Join Health Beta';
+                spinner.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
